@@ -14,7 +14,7 @@ namespace CityInfo.Infrastructure.Entities
         public CityInfoContext(DbContextOptions<CityInfoContext> options) : base (options)
         {
             /// Makes sure database gets created if it not yet exists
-            Database.EnsureCreated();
+            Database.Migrate();
         }
 
     }
