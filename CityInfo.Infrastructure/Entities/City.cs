@@ -25,7 +25,7 @@ namespace CityInfo.Infrastructure.Entities
         /// <summary>
         ///  Initialize to an empty list to avoid null reference exception problems
         /// </summary>
-        public ICollection<PointOfInterest> PointOfInterest { get; set; }
+        public ICollection<PointOfInterest> PointsOfInterest { get; set; }
             = new List<PointOfInterest>();
     }
 }

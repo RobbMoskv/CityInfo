@@ -1,10 +1,11 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Text;
+using CityInfo.Infrastructure.Entities;
 using Microsoft;
 using Microsoft.EntityFrameworkCore;
 
-namespace CityInfo.Infrastructure.Entities
+namespace CityInfo.Infrastructure.Context
 {
     public class CityInfoContext : DbContext
     {
