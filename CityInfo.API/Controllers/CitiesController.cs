@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using AutoMapper;
 
 namespace CityInfo.API.Controllers
 {
@@ -21,17 +22,22 @@ namespace CityInfo.API.Controllers
         public IActionResult GetCities()
         {
             var cityEntities = _cityInfoRepository.GetCities();
-            var results = new List<CityWithoutPointsOfInterestDto>();
+            #region Approach without AutoMapper
+            //var results = new List<CityWithoutPointsOfInterestDto>();
 
-            foreach (var cityEntity in cityEntities)
-            {
-                results.Add(new CityWithoutPointsOfInterestDto
-                {
-                    Id = cityEntity.Id,
-                    Name = cityEntity.Name,
-                    Description = cityEntity.Description,
-                });
-            }
+            //foreach (var cityEntity in cityEntities)
+            //{
+            //    results.Add(new CityWithoutPointsOfInterestDto
+            //    {
+            //        Id = cityEntity.Id,
+            //        Name = cityEntity.Name,
+            //        Description = cityEntity.Description,
+            //    });
+            //}
+            #endregion
+
+            // Map each item from destination list to the source list
+            var results = Mapper.Map<IEnumerable<CityWithoutPointsOfInterestDto>>(cityEntities);
 
             return Ok(results);
         }
@@ -40,9 +46,9 @@ namespace CityInfo.API.Controllers
         public IActionResult GetCity(int id, bool includePointsOfInterest)
         {
             /// Find city
-            var CityEntity = _cityInfoRepository.GetCity(id, includePointsOfInterest);
+            var cityEntity = _cityInfoRepository.GetCity(id, includePointsOfInterest);
 
-            if (CityEntity == null)
+            if (cityEntity == null)
             {
                 return NotFound();
             }
@@ -50,35 +56,12 @@ namespace CityInfo.API.Controllers
             /// In case points of interest for a city are requested
             if (includePointsOfInterest)
             {
-                var cityResult = new CityDto()
-                {
-                    Id = CityEntity.Id,
-                    Name = CityEntity.Name,
-                    Description = CityEntity.Description
-                };
-
-                foreach (var poi in CityEntity.PointsOfInterest)
-                {
-                    cityResult.PointsOfInterest.Add(
-                        new PointOfInterestDto
-                        {
-                            Id = poi.Id,
-                            Name = poi.Name,
-                            Description = poi.Description,
-                        }
-                    );
-                }
-
+                var cityResult = Mapper.Map<CityDto>(cityEntity);
                 return Ok(cityResult);
             }
 
             /// Otherwise return just the city
-            var cityWithoutPointsOfInterestResult = new CityWithoutPointsOfInterestDto
-            {
-                Id = CityEntity.Id,
-                Name = CityEntity.Name,
-                Description = CityEntity.Description,
-            };
+            var cityWithoutPointsOfInterestResult = Mapper.Map<CityWithoutPointsOfInterestDto>(cityEntity);
 
             return Ok(cityWithoutPointsOfInterestResult);
 

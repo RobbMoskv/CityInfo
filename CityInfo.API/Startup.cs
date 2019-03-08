@@ -101,6 +101,14 @@ namespace CityInfo.API
             /// Display status codes
             app.UseStatusCodePages();
 
+            /// Auto mapping from model entities to model dto's
+            AutoMapper.Mapper.Initialize(config =>
+            {
+                config.CreateMap<Infrastructure.Entities.City, Models.CityWithoutPointsOfInterestDto>();
+                config.CreateMap<Infrastructure.Entities.City, Models.CityDto>();
+                config.CreateMap<Infrastructure.Entities.PointOfInterest, Models.PointOfInterestDto>();
+            });
+
             /// Use the core mvc pattern 
             app.UseMvc();
 
