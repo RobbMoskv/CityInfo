@@ -9,7 +9,7 @@ namespace CityInfo.API.Models
     /// This is a view model
     /// DTO stands for "Data transfer object"
     /// </summary>
-    public class CitiesDto
+    public class CityDto
     {
         public int Id { get; set; }
         public string Name { get; set; }
@@ -25,7 +25,7 @@ namespace CityInfo.API.Models
         /// <summary>
         ///  Initialize Collection direclty here instead in constructor
         /// </summary>
-        public ICollection<PointsOfInterestDto> PointsOfInterest { get; set; }
-        = new List<PointsOfInterestDto>();
+        public ICollection<PointOfInterestDto> PointsOfInterest { get; set; }
+        = new List<PointOfInterestDto>();
     }
 }

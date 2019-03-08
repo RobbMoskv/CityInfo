@@ -13,26 +13,26 @@ namespace CityInfo.API
         /// </summary>
         public static CitiesDataStore Current { get; } = new CitiesDataStore();
 
-        public List<CitiesDto> Cities { get; set; }
+        public List<CityDto> Cities { get; set; }
 
         public CitiesDataStore()
         {
-            Cities = new List<CitiesDto>()
+            Cities = new List<CityDto>()
             {
-                new CitiesDto
+                new CityDto
                 {
                     Id = 1,
                     Name = "New York City",
                     Description = "Where to cool and fancy people live and do business.",
-                    PointsOfInterest = new List<PointsOfInterestDto>()
+                    PointsOfInterest = new List<PointOfInterestDto>()
                     {
-                        new PointsOfInterestDto()
+                        new PointOfInterestDto()
                         {
                             Id = 1,
                             Name = "Central Park",
                             Description = "Super cool experience."
                         },
-                        new PointsOfInterestDto()
+                        new PointOfInterestDto()
                         {
                             Id = 2,
                             Name = "Brookly Bridge",
@@ -40,20 +40,20 @@ namespace CityInfo.API
                         },
                     }
                 },
-                new CitiesDto
+                new CityDto
                 {
                     Id = 2,
                     Name = "London City",
                     Description = "Huge city but you never feel lost somehow.",
-                    PointsOfInterest = new List<PointsOfInterestDto>()
+                    PointsOfInterest = new List<PointOfInterestDto>()
                     {
-                        new PointsOfInterestDto()
+                        new PointOfInterestDto()
                         {
                             Id = 1,
                             Name = "Camden Market",
                             Description = "Special things to buy."
                         },
-                        new PointsOfInterestDto()
+                        new PointOfInterestDto()
                         {
                             Id = 2,
                             Name = "Musem of Art",
@@ -61,20 +61,20 @@ namespace CityInfo.API
                         },
                     }
                 },
-                new CitiesDto
+                new CityDto
                 {
                     Id = 3,
                     Name = "Lucerne",
                     Description = "Just that big that you can turn around a reach nature in a bunch of minutes from everywhere.",
-                    PointsOfInterest = new List<PointsOfInterestDto>()
+                    PointsOfInterest = new List<PointOfInterestDto>()
                     {
-                        new PointsOfInterestDto()
+                        new PointOfInterestDto()
                         {
                             Id = 1,
                             Name = "Verkehrshaus",
                             Description = "So impressing how they managed the Gotthard went through."
                         },
-                        new PointsOfInterestDto()
+                        new PointOfInterestDto()
                         {
                             Id = 2,
                             Name = "Schwanenplatz",

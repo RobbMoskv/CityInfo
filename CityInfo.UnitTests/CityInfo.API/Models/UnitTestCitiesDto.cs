@@ -22,7 +22,7 @@ namespace CityInfo.UnitTests.CityInfo.API.Models
         public void CitiesDto_ReturnCorrectCityObject()
         {
             // Arrange
-            CitiesDto expected = new CitiesDto()
+            CityDto expected = new CityDto()
             {
                 Id = 1000,
                 Name = "Test-Town",
@@ -31,7 +31,7 @@ namespace CityInfo.UnitTests.CityInfo.API.Models
 
             // Act
             // Assert
-            Assert.IsType<CitiesDto>(expected);
+            Assert.IsType<CityDto>(expected);
 
             Assert.Equal("1000", expected.Id.ToString());
             Assert.Equal("Test-Town", expected.Name.ToString());

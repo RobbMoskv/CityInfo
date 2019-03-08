@@ -87,7 +87,7 @@ namespace CityInfo.API.Controllers
         /// <param name="pointOfInterest"></param>
         /// <returns></returns>
         [HttpPost("{cityId}/pointsofinterest")]
-        public IActionResult CreatePointOfInterest(int cityId, [FromBody] PointsOfInterestForCreationDto pointOfInterest)
+        public IActionResult CreatePointOfInterest(int cityId, [FromBody] PointOfInterestForCreationDto pointOfInterest)
         {
             if (pointOfInterest == null)
             {
@@ -110,7 +110,7 @@ namespace CityInfo.API.Controllers
                 .SelectMany(c => c.PointsOfInterest)
                 .Max(p => p.Id);
 
-            var finalPointOfInterest = new PointsOfInterestDto()
+            var finalPointOfInterest = new PointOfInterestDto()
             {
                 Id = ++maxPointOfInterestId,
                 Name = pointOfInterest.Name,
@@ -134,7 +134,7 @@ namespace CityInfo.API.Controllers
         /// <returns></returns>
         [HttpPut("{cityId}/pointsofinterest/{id}")]
         public IActionResult UpdatePointOfInterest(int cityId, int id,
-            [FromBody] PointsOfInterestForUpdateDto pointsOfInterest)
+            [FromBody] PointOfInterestForUpdateDto pointsOfInterest)
         {
             if (pointsOfInterest == null)
             {
@@ -176,7 +176,7 @@ namespace CityInfo.API.Controllers
 
         [HttpPatch("{cityId}/pointsofinterest/{id}")]
         public IActionResult PartialUpdatePointOfInterest(int cityId, int id,
-            [FromBody] JsonPatchDocument<PointsOfInterestForUpdateDto> patchDoc)
+            [FromBody] JsonPatchDocument<PointOfInterestForUpdateDto> patchDoc)
         {
             if (patchDoc == null)
             {
@@ -198,7 +198,7 @@ namespace CityInfo.API.Controllers
             }
 
             // 
-            var pointOfInterestToPatch = new PointsOfInterestForUpdateDto()
+            var pointOfInterestToPatch = new PointOfInterestForUpdateDto()
             {
                 Name = pointOfInterestFromStore.Name,
                 Description = pointOfInterestFromStore.Description,
