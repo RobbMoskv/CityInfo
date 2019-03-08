@@ -16,13 +16,13 @@ namespace CityInfo.Infrastructure.Services
             _context = context;
         }
 
-        // Get all cities
+        /// Get all cities
         public IEnumerable<City> GetCities()
         {
             return _context.Cities.OrderBy(c => c.Name).ToList();
         }
 
-        // Get a specific city
+        /// Get a specific city
         public City GetCity(int cityId, bool includePointsOfInterest)
         {
             if (includePointsOfInterest)
@@ -35,18 +35,24 @@ namespace CityInfo.Infrastructure.Services
                 .Where(c => c.Id == cityId).FirstOrDefault();
         }
 
-        // Get all point of interest for a specific city
+        /// Get all point of interest for a specific city
         public IEnumerable<PointOfInterest> GetPointsOfInterestForCity(int cityId)
         {
             return _context.PointsOfInterest
                 .Where(p => p.CityId == cityId).ToList();
         }
 
-        // Get a specific point of interest of a specific city
+        /// Get a specific point of interest of a specific city
         public PointOfInterest GetPointOfInterestForCity(int cityId, int pointOfInterestId)
         {
             return _context.PointsOfInterest
                 .Where(p => p.CityId == cityId && p.Id == pointOfInterestId).FirstOrDefault();
+        }
+
+        /// Verify if a city exists.
+        public bool CityExists(int cityId)
+        {
+            return _context.Cities.Any(c => c.Id == cityId);
         }
 
     }

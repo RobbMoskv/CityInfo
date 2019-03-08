@@ -20,5 +20,8 @@ namespace CityInfo.Infrastructure.Services
         // Get a specific point of interest of a specific city
         PointOfInterest GetPointOfInterestForCity(int cityId, int pointOfInterestId);
 
+        /// Verify if a city exists.
+        bool CityExists(int cityId);
+
     }
 }

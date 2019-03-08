@@ -7,7 +7,7 @@ Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityInfo.API", "CityInfo.AP
 EndProject
 Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityInfo.UnitTests", "CityInfo.UnitTests\CityInfo.UnitTests.csproj", "{0F24E7E8-2E14-4871-8BF9-5C405BB32AD1}"
 EndProject
-Project("{FAE04EC0-301F-11D3-BF4B-00C04F79EFBC}") = "CityInfo.Infrastructure", "CityInfo.Infrastructure\CityInfo.Infrastructure.csproj", "{3659ED4A-934C-44A4-AAD0-0B5A2989177F}"
+Project("{9A19103F-16F7-4668-BE54-9A1E7A4F7556}") = "CityInfo.Infrastructure", "CityInfo.Infrastructure\CityInfo.Infrastructure.csproj", "{3659ED4A-934C-44A4-AAD0-0B5A2989177F}"
 EndProject
 Global
 	GlobalSection(SolutionConfigurationPlatforms) = preSolution

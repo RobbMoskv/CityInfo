@@ -4,6 +4,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using CityInfo.API.Models;
 using CityInfo.API.Services;
+using CityInfo.Infrastructure.Services;
 using Microsoft.AspNetCore.Http;
 using Microsoft.AspNetCore.JsonPatch;
 using Microsoft.AspNetCore.Mvc;
@@ -14,17 +15,17 @@ namespace CityInfo.API.Controllers
     [Route("api/cities")]
     public class PointsOfInterestController : Controller
     {
-        /// Provide an ILogger T-Instance
+        /// Instances for injected services
         private ILogger<PointsOfInterestController> _logger;
-
-        // Field to hold the injected instance
         private IMailService _mailService;
+        private ICityInfoRepository _cityInfoRepository;
 
         /// Inject the Logger Instance via DI in the constructor
-        public PointsOfInterestController(ILogger<PointsOfInterestController> logger, IMailService mailService)
+        public PointsOfInterestController(ILogger<PointsOfInterestController> logger, IMailService mailService, ICityInfoRepository cityInfoRepository)
         {
             _logger = logger;
             _mailService = mailService;
+            _cityInfoRepository = cityInfoRepository;
         }
 
         /// <summary>
@@ -37,14 +38,28 @@ namespace CityInfo.API.Controllers
         {
             try
             {
-                // Get specif City and check if it exists
-                var result = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
-                if (result == null)
+                // Verify id specific City even exists
+                if (!_cityInfoRepository.CityExists(cityId))
                 {
                     _logger.LogInformation($"City with ID #{cityId} was not found!.");
                     return NotFound();
                 }
-                return Ok(result.PointsOfInterest);
+
+                var pointsOfInterestForCity = _cityInfoRepository.GetPointsOfInterestForCity(cityId);
+                var pointsOfInterestForCityResults = new List<PointOfInterestDto>();
+
+                foreach (var poi in pointsOfInterestForCity)
+                {
+                    pointsOfInterestForCityResults.Add(new PointOfInterestDto
+                    {
+                        Id = poi.Id,
+                        Name = poi.Name,
+                        Description = poi.Description,
+                    });
+                }
+
+                return Ok(pointsOfInterestForCityResults);
+
             }
             catch (Exception ex)
             {
@@ -63,21 +78,26 @@ namespace CityInfo.API.Controllers
         [HttpGet("{cityId}/PointsOfInterest/{id}", Name = "GetPointOfInterest")]
         public IActionResult GetPointsofInterest(int cityId, int id)
         {
-            // Check if city exists
-            var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
-            if (city == null)
+            // Verify id specific City even exists
+            if (!_cityInfoRepository.CityExists(cityId))
             {
                 return NotFound();
             }
 
-            // Then if point of interest exists
-            var pointofInterest = city.PointsOfInterest.FirstOrDefault(p => p.Id == id);
-            if (pointofInterest == null)
+            var pointOfInterestForCity = _cityInfoRepository.GetPointOfInterestForCity(cityId, id);
+            if (pointOfInterestForCity == null)
             {
                 return NotFound();
             }
 
-            return Ok(pointofInterest);
+            var pointOfInterestResult = new PointOfInterestDto()
+            {
+                Id = pointOfInterestForCity.Id,
+                Name = pointOfInterestForCity.Name,
+                Description = pointOfInterestForCity.Description,
+            };
+
+            return Ok(pointOfInterestResult);
         }
 
         /// <summary>
