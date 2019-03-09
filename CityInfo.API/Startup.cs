@@ -110,8 +110,11 @@ namespace CityInfo.API
                 config.CreateMap<Infrastructure.Entities.PointOfInterest, Models.PointOfInterestDto>();
                 /// CREATE
                 config.CreateMap<Models.PointOfInterestForCreationDto, Infrastructure.Entities.PointOfInterest>();
-                /// UPDATE
+                /// PUT
                 config.CreateMap<Models.PointOfInterestForUpdateDto, Infrastructure.Entities.PointOfInterest>();
+                /// PATCH
+                config.CreateMap<Infrastructure.Entities.PointOfInterest, Models.PointOfInterestForUpdateDto>();
+                /// DELETE
             });
 
             /// Use the core mvc pattern 

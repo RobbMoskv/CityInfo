@@ -190,25 +190,20 @@ namespace CityInfo.API.Controllers
             }
 
             // Check if related city exists
-            var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
-            if (city == null)
+            if (!_cityInfoRepository.CityExists(cityId))
             {
                 return NotFound();
             }
 
             // Check if specified point of interest exists.
-            var pointOfInterestFromStore = city.PointsOfInterest.FirstOrDefault(p => p.Id == id);
-            if (pointOfInterestFromStore == null)
+            var pointOfInterestEntity = _cityInfoRepository.GetPointOfInterestForCity(cityId, id);
+            if (pointOfInterestEntity == null)
             {
                 return NotFound();
             }
 
             // 
-            var pointOfInterestToPatch = new PointOfInterestForUpdateDto()
-            {
-                Name = pointOfInterestFromStore.Name,
-                Description = pointOfInterestFromStore.Description,
-            };
+            var pointOfInterestToPatch = Mapper.Map<PointOfInterestForUpdateDto>(pointOfInterestEntity);
 
             patchDoc.ApplyTo(pointOfInterestToPatch, ModelState);
 
@@ -219,11 +214,15 @@ namespace CityInfo.API.Controllers
                 return BadRequest(ModelState);
             }
 
-            // Update all content (put)
-            pointOfInterestFromStore.Name = pointOfInterestToPatch.Name;
-            pointOfInterestFromStore.Description = pointOfInterestToPatch.Description;
+            // Update all content (Source, Destination)
+            Mapper.Map(pointOfInterestToPatch, pointOfInterestEntity);
 
-            // Default response for update requests
+            // Save
+            if (!_cityInfoRepository.Save())
+            {
+                return StatusCode(500, "A problem happened while hanlding your request.");
+            }
+
             return NoContent();
         }
 
