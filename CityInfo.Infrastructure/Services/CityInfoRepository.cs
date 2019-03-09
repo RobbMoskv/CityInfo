@@ -56,6 +56,11 @@ namespace CityInfo.Infrastructure.Services
             city.PointsOfInterest.Add(pointOfInterest);
         }
 
+        public void DeletePointOfInterest(PointOfInterest pointOfInterest)
+        {
+            _context.PointsOfInterest.Remove(pointOfInterest);
+        }
+
         public bool Save()
         {
             // Return true when 0 or more entitites have been saved.

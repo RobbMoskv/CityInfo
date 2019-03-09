@@ -230,24 +230,29 @@ namespace CityInfo.API.Controllers
         public IActionResult DeletePointOfInterest(int cityId, int id)
         {
             // Check if related city exists
-            var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
-            if (city == null)
+            if (!_cityInfoRepository.CityExists(cityId))
             {
                 return NotFound();
             }
 
             // Check if specified point of interest exists.
-            var pointOfInterestFromStore = city.PointsOfInterest.FirstOrDefault(p => p.Id == id);
-            if (pointOfInterestFromStore == null)
+            var pointOfInterestEntity = _cityInfoRepository.GetPointOfInterestForCity(cityId, id);
+            if (pointOfInterestEntity == null)
             {
                 return NotFound();
             }
 
-            city.PointsOfInterest.Remove(pointOfInterestFromStore);
+            // Delete point of interest
+            _cityInfoRepository.DeletePointOfInterest(pointOfInterestEntity);
+
+            if (!_cityInfoRepository.Save())
+            {
+                return StatusCode(500, "A problem happened while hanlding your request.");
+            }
 
             /// Notify via email in case a PoI gets deleted
             _mailService.Send("Point of interest was deleted",
-                $"Point of interest #{pointOfInterestFromStore.Id} - {pointOfInterestFromStore.Name} was deleted");
+                $"Point of interest #{pointOfInterestEntity.Id} - {pointOfInterestEntity.Name} was deleted");
 
             return NoContent();
         }

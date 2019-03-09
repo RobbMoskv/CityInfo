@@ -52,6 +52,12 @@ namespace CityInfo.Infrastructure.Services
         void AddPointOfInterestForCity(int cityId, PointOfInterest pointOfInterest);
 
         /// <summary>
+        /// Delete a point of interest
+        /// </summary>
+        /// <param name="pointOfInterest"></param>
+        void DeletePointOfInterest(PointOfInterest pointOfInterest);
+
+        /// <summary>
         /// Return true if successfully saved.
         /// </summary>
         /// <returns></returns>
