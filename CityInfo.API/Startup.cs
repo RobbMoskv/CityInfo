@@ -104,9 +104,12 @@ namespace CityInfo.API
             /// Auto mapping from model entities to model dto's
             AutoMapper.Mapper.Initialize(config =>
             {
+                /// GET
                 config.CreateMap<Infrastructure.Entities.City, Models.CityWithoutPointsOfInterestDto>();
                 config.CreateMap<Infrastructure.Entities.City, Models.CityDto>();
                 config.CreateMap<Infrastructure.Entities.PointOfInterest, Models.PointOfInterestDto>();
+                /// CREATE
+                config.CreateMap<Models.PointOfInterestForCreationDto, Infrastructure.Entities.PointOfInterest>();
             });
 
             /// Use the core mvc pattern 

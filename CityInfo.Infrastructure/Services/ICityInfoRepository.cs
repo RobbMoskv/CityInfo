@@ -8,20 +8,53 @@ namespace CityInfo.Infrastructure.Services
 {
     public interface ICityInfoRepository
     {
-        // Get all cities
+        /// <summary>
+        /// Get all cities
+        /// </summary>
+        /// <returns></returns>
         IEnumerable<City> GetCities();
 
-        // Get a specific city
+        /// <summary>
+        /// Get a specific city
+        /// </summary>
+        /// <param name="cityId"></param>
+        /// <param name="includePointsOfInterest"></param>
+        /// <returns></returns>
         City GetCity(int cityId, bool includePointsOfInterest);
 
-        // Get all point of interest for a specific city
+        /// <summary>
+        /// Get all point of interest for a specific city
+        /// </summary>
+        /// <param name="cityId"></param>
+        /// <returns></returns>
         IEnumerable<PointOfInterest> GetPointsOfInterestForCity(int cityId);
 
-        // Get a specific point of interest of a specific city
+        /// <summary>
+        /// Get a specific point of interest of a specific city
+        /// </summary>
+        /// <param name="cityId"></param>
+        /// <param name="pointOfInterestId"></param>
+        /// <returns></returns>
         PointOfInterest GetPointOfInterestForCity(int cityId, int pointOfInterestId);
 
+        /// <summary>
         /// Verify if a city exists.
+        /// </summary>
+        /// <param name="cityId"></param>
+        /// <returns></returns>
         bool CityExists(int cityId);
 
+        /// <summary>
+        /// Adds a specific Point of interest to a defined city
+        /// </summary>
+        /// <param name="cityId"></param>
+        /// <param name="pointOfInterest"></param>
+        void AddPointOfInterestForCity(int cityId, PointOfInterest pointOfInterest);
+
+        /// <summary>
+        /// Return true if successfully saved.
+        /// </summary>
+        /// <returns></returns>
+        bool Save();
     }
 }

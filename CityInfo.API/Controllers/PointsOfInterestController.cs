@@ -47,6 +47,7 @@ namespace CityInfo.API.Controllers
                 }
 
                 var pointsOfInterestForCity = _cityInfoRepository.GetPointsOfInterestForCity(cityId);
+                // Map each item from destination list to the source list
                 var pointsOfInterestForCityResults = Mapper.Map<IEnumerable<PointOfInterestDto>>(pointsOfInterestForCity);
 
                 return Ok(pointsOfInterestForCityResults);
@@ -80,7 +81,7 @@ namespace CityInfo.API.Controllers
             {
                 return NotFound();
             }
-
+            // Map each item from destination list to the source list
             var pointOfInterestResult = Mapper.Map<PointOfInterestDto>(pointOfInterestForCity);
 
             return Ok(pointOfInterestResult);
@@ -104,30 +105,25 @@ namespace CityInfo.API.Controllers
             {
                 return BadRequest(ModelState);
             }
-            var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
-            if (city == null)
+
+            if (!_cityInfoRepository.CityExists(cityId))
             {
                 return NotFound();
             }
 
+            var finalPointOfInterest = Mapper.Map<Infrastructure.Entities.PointOfInterest>(pointOfInterest);
+            _cityInfoRepository.AddPointOfInterestForCity(cityId, finalPointOfInterest);
 
-            // Will be improved later on
-            var maxPointOfInterestId = CitiesDataStore.Current.Cities
-                .SelectMany(c => c.PointsOfInterest)
-                .Max(p => p.Id);
-
-            var finalPointOfInterest = new PointOfInterestDto()
+            if (!_cityInfoRepository.Save())
             {
-                Id = ++maxPointOfInterestId,
-                Name = pointOfInterest.Name,
-                Description = pointOfInterest.Description,
-            };
-
-            city.PointsOfInterest.Add(finalPointOfInterest);
+                return StatusCode(500, "A problem happened while hanlding your request.");
+            }
+            // Return point of interest for display
+            var createdPointOfInterestToReturn = Mapper.Map<PointOfInterestDto>(finalPointOfInterest);
 
             return CreatedAtRoute("GetPointOfInterest",
-                new { cityId = cityId, id = finalPointOfInterest.Id },
-                finalPointOfInterest);
+                new { cityId = cityId, id = createdPointOfInterestToReturn.Id },
+                createdPointOfInterestToReturn);
 
         }
 
