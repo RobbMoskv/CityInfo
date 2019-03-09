@@ -136,15 +136,15 @@ namespace CityInfo.API.Controllers
         /// <returns></returns>
         [HttpPut("{cityId}/pointsofinterest/{id}")]
         public IActionResult UpdatePointOfInterest(int cityId, int id,
-            [FromBody] PointOfInterestForUpdateDto pointsOfInterest)
+            [FromBody] PointOfInterestForUpdateDto pointOfInterest)
         {
-            if (pointsOfInterest == null)
+            if (pointOfInterest == null)
             {
                 return BadRequest();
             }
 
             // Create own error model
-            if (pointsOfInterest.Description == pointsOfInterest.Name)
+            if (pointOfInterest.Description == pointOfInterest.Name)
             {
                 ModelState.AddModelError("Description", "The please do not use just the name as description.");
             }
@@ -155,22 +155,26 @@ namespace CityInfo.API.Controllers
             }
 
             // Check if related city exists
-            var city = CitiesDataStore.Current.Cities.FirstOrDefault(c => c.Id == cityId);
-            if (city == null)
+            if (!_cityInfoRepository.CityExists(cityId))
             {
                 return NotFound();
             }
 
             // Check if specified point of interest exists.
-            var pointOfInterestFromStore = city.PointsOfInterest.FirstOrDefault(p => p.Id == id);
-            if (pointOfInterestFromStore == null)
+            var pointOfInterestEntity = _cityInfoRepository.GetPointOfInterestForCity(cityId, id);
+            if (pointOfInterestEntity == null)
             {
                 return NotFound();
             }
 
             // Update all content (put)
-            pointOfInterestFromStore.Name = pointsOfInterest.Name;
-            pointOfInterestFromStore.Description = pointsOfInterest.Description;
+            Mapper.Map(pointOfInterest, pointOfInterestEntity);
+
+            // Save
+            if (!_cityInfoRepository.Save())
+            {
+                return StatusCode(500, "A problem happened while hanlding your request.");
+            }
 
             // Default response for update requests
             return NoContent();
