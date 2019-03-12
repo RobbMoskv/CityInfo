@@ -1,4 +1,5 @@
-﻿using System;
+﻿
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -62,6 +63,10 @@ namespace CityInfo.API
             // services.AddScoped<Service>(); -> This services are created once per request
             // services.AddSingleton<Service>(); -> This services are created the first time they are requested
             #endregion
+            // Configure services
+            services.Configure<EmailSettings>(Configuration.GetSection("mailSettings"));
+            services.AddOptions();
+
             // Add the mailService as a lightweight service to have it available for injections.
 #if DEBUG
             services.AddTransient<IMailService, LocalMailService>();
@@ -72,7 +77,7 @@ namespace CityInfo.API
             var connectionString = Startup.Configuration["connectionStrings:cityInfoDBConnectionString"];
             services.AddDbContext<CityInfoContext>(o => o.UseSqlServer(connectionString));
 
-            // Register Repository witha scoped live time (once per request)
+            // Register Repository with a scoped live time (once per request)
             services.AddScoped<ICityInfoRepository, CityInfoRepository>();
         }
 

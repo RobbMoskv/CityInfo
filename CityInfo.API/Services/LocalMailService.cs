@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.Extensions.Options;
+using System;
 using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
@@ -8,8 +9,17 @@ namespace CityInfo.API.Services
 {
     public class LocalMailService : IMailService
     {
-        private string _mailTo = Startup.Configuration["mailSettings:mailToAddress"];
-        private string _mailFrom = Startup.Configuration["mailSettings:mailFromAddress"];
+        //private string _mailTo = Startup.Configuration["mailSettings:mailToAddress"];
+        //private string _mailFrom = Startup.Configuration["mailSettings:mailFromAddress"];
+
+        private string _mailTo;
+        private string _mailFrom;
+
+        public LocalMailService(IOptions<EmailSettings> mailOptions)
+        {
+            _mailFrom = mailOptions.Value.MailFromAddress;
+            _mailTo = mailOptions.Value.MailToAddress;
+        }
 
         public void Send(string subject, string message)
         {

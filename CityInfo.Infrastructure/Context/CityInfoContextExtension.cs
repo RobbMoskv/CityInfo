@@ -9,7 +9,7 @@ namespace CityInfo.Infrastructure.Context
     public static class CityInfoContextExtension
     {
         /// <summary>
-        /// Static method to initialie seed the database
+        /// Static method to initially seed the database
         /// </summary>
         /// <param name="context"></param>
         public static void EnsureSeedDataForContext(this CityInfoContext context)
