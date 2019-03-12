@@ -3,7 +3,6 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
-using CityInfo.API.Services;
 using CityInfo.Infrastructure.Context;
 using CityInfo.Infrastructure.Services;
 using Microsoft.AspNetCore.Builder;
